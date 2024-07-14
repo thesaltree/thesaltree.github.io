@@ -9,8 +9,8 @@ type Props = {
 const BlogsList: React.FC<Props> = ({ posts, onPostClick }) => {
   return (
     <ul className="space-y-6">
-      {posts.map((post) => (
-        <li key={post._id} className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
+      {posts.map((post, index) => (
+        <li key={index} className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">
               {new Date(post.publishedAt).toLocaleDateString('en-US', {

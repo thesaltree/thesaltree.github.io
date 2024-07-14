@@ -14,7 +14,7 @@ const AboutMePage: React.FC<Props> = ({ post }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="md:flex items-center h-screen">
+      <div className="flex flex-col md:flex-row md:items-center min-h-screen">
         <div className="md:flex-1 p-6 md:p-8 flex flex-col items-center">
           <div className="prose max-w-none text-gray-600 text-center">
             <BlockContent blocks={post.body} serializers={serializers} />
@@ -45,8 +45,8 @@ const AboutMePage: React.FC<Props> = ({ post }) => {
           </div>
         </div>
         {post.imageUrl && (
-          <div className="md:flex-1">
-            <img className="w-full h-full object-cover" src={post.imageUrl} alt="Saloni Agarwal" />
+          <div className="flex-1 h-64 md:h-auto relative m-2">
+            <img className="w-full h-full object-cover" src={post.imageUrl} alt="Saloni Agarwal" style={{ height: 'auto', maxHeight: '900px' }} />
           </div>
         )}
       </div>

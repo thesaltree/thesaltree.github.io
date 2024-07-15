@@ -7,7 +7,7 @@ import client from '../../client'
 import { Post } from '@/types'
 
 async function getPosts() {
-    const query = `*[_type == "post"] {
+    const query = `*[_type == "post"] | order(publishedAt desc) {
     title,
     body,
     publishedAt,

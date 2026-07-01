@@ -28,7 +28,7 @@ const AboutMePage: React.FC<Props> = ({ post, featuredPosts = [], onPostClick })
             <div className="mt-12 bg-transparent border border-academic-border-light dark:border-academic-border-dark rounded-xl p-6 w-full">
               <div className="flex justify-between items-center mb-6 border-b border-academic-border-light/60 dark:border-academic-border-dark/60 pb-3">
                 <h3 className="font-sans font-bold text-xs uppercase tracking-widest text-gray-400 dark:text-gray-500">
-                  Selected Writings
+                  Recent Writings
                 </h3>
                 <span className="text-xl text-academic-accent-light dark:text-academic-accent-dark filter drop-shadow-[0.5px_0.5px_0px_currentColor] opacity-80 select-none">🀅</span>
               </div>

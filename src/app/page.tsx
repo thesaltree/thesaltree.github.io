@@ -98,7 +98,7 @@ export default function Home() {
 
 
 
-    const navItems = ['home', 'devBlogs', 'thoughtsDump', 'myCV'];
+    const navItems = ['home', 'devBlogs', 'thoughtsDump'];
 
     return (
       <div className="min-h-screen flex flex-col bg-academic-bg-light dark:bg-academic-bg-dark text-academic-fg-light dark:text-academic-fg-dark selection:bg-academic-accent-light/10 dark:selection:bg-academic-accent-dark/20 transition-colors duration-300">

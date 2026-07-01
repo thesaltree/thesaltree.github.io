@@ -2,51 +2,81 @@ import React from 'react';
 import BlockContent from '@sanity/block-content-to-react';
 import { Post } from '@/types';
 import { serializers } from '@/app/utils/bodyParser';
+import { getReadingTime } from '@/app/components/BlogsList';
 
 type Props = {
   post?: Post;
+  featuredPosts?: Post[];
+  onPostClick?: (post: Post) => void;
 }
 
-const AboutMePage: React.FC<Props> = ({ post }) => {
+const AboutMePage: React.FC<Props> = ({ post, featuredPosts = [], onPostClick }) => {
   if (!post) {
-    return <div className="text-center text-gray-600">Loading...</div>;
+    return <div className="text-center text-gray-500 font-sans">Loading...</div>;
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="flex flex-col md:flex-row md:items-center min-h-screen">
-        <div className="md:flex-1 p-6 md:p-8 flex flex-col items-center">
-          <div className="prose max-w-none text-gray-600 text-center">
+    <div className="w-full">
+      <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-16 items-start">
+        <div className="flex-1 w-full">
+          <div className="font-serif text-lg leading-relaxed text-gray-800 dark:text-gray-200">
             <BlockContent blocks={post.body} serializers={serializers} />
           </div>
-          <div className="p-6">
-            <div className="flex flex-wrap justify-center gap-4">
-              <img src="https://img.shields.io/badge/-Golang-00ADD8?style=flat&logo=go&logoColor=white" alt="Golang" />
-              <img src="https://img.shields.io/badge/-PHP-777BB4?style=flat&logo=php&logoColor=white" alt="PHP" />
-              <img src="https://img.shields.io/badge/-C++-00599C?style=flat&logo=c%2B%2B&logoColor=white" alt="C++" />
-              <img src="https://img.shields.io/badge/-Python-3776AB?style=flat&logo=python&logoColor=white" alt="Python" />
-              <img src="https://img.shields.io/badge/-TypeScript-3178C6?style=flat&logo=typescript&logoColor=white" alt="TypeScript" />
-              <img src="https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black" alt="JavaScript" />
-              <img src="https://img.shields.io/badge/-React-61DAFB?style=flat&logo=react&logoColor=black" alt="React" />
-              <img src="https://img.shields.io/badge/-MySQL-4479A1?style=flat&logo=mysql&logoColor=white" alt="MySQL" />
-              <img src="https://img.shields.io/badge/-PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-              <img src="https://img.shields.io/badge/-GraphQL-E10098?style=flat&logo=graphql&logoColor=white" alt="GraphQL" />
-              <img src="https://img.shields.io/badge/-Vue.js-4FC08D?style=flat&logo=vue.js&logoColor=white" alt="Vue.js" />
-              <img src="https://img.shields.io/badge/-Next.js-000000?style=flat&logo=next.js&logoColor=white" alt="Next.js" />
-              <img src="https://img.shields.io/badge/-Node.js-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js" />
-              <img src="https://img.shields.io/badge/-R-276DC3?style=flat&logo=r&logoColor=white" alt="R" />
-              <img src="https://img.shields.io/badge/-Docker-2496ED?style=flat&logo=docker&logoColor=white" alt="Docker" />
-              <img src="https://img.shields.io/badge/-GitHub-181717?style=flat&logo=github&logoColor=white" alt="GitHub" />
-              <img src="https://img.shields.io/badge/-Webpack-8DD6F9?style=flat&logo=webpack&logoColor=black" alt="Webpack" />
-              <img src="https://img.shields.io/badge/-Vite-646CFF?style=flat&logo=vite&logoColor=white" alt="Vite" />
-              <img src="https://img.shields.io/badge/-ESLint-4B32C3?style=flat&logo=eslint&logoColor=white" alt="ESLint" />
-              <img src="https://img.shields.io/badge/-NestJS-E0234E?style=flat&logo=nestjs&logoColor=white" alt="NestJS" />
+          
+          {/* Selected Writings */}
+          {featuredPosts.length > 0 && (
+            <div className="mt-12 bg-transparent border border-academic-border-light dark:border-academic-border-dark rounded-xl p-6 w-full">
+              <div className="flex justify-between items-center mb-6 border-b border-academic-border-light/60 dark:border-academic-border-dark/60 pb-3">
+                <h3 className="font-sans font-bold text-xs uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                  Selected Writings
+                </h3>
+                <span className="text-xl text-academic-accent-light dark:text-academic-accent-dark filter drop-shadow-[0.5px_0.5px_0px_currentColor] opacity-80 select-none">🀅</span>
+              </div>
+              <ul className="space-y-4">
+                {featuredPosts.map((blog, index) => {
+                  const dateStr = new Date(blog.publishedAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric'
+                  });
+                  const readingTime = getReadingTime(blog.body);
+                  return (
+                    <li 
+                      key={index} 
+                      className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-dashed border-academic-border-light/40 dark:border-academic-border-dark/40 pb-3 last:border-b-0 last:pb-0"
+                    >
+                      <div className="flex items-baseline gap-4">
+                        <span className="text-sm text-academic-accent-light dark:text-academic-accent-dark select-none">🀐</span>
+                        <span className="text-xs font-mono text-gray-400 dark:text-gray-500 shrink-0 w-24">
+                          {dateStr}
+                        </span>
+                        <h4
+                          onClick={() => onPostClick && onPostClick(blog)}
+                          className="text-md font-bold font-serif text-gray-900 dark:text-gray-100 hover:text-academic-accent-light dark:hover:text-academic-accent-dark cursor-pointer transition-colors duration-150"
+                        >
+                          {blog.title}
+                        </h4>
+                      </div>
+                      <span className="text-xs font-mono text-gray-400 dark:text-gray-500 self-start sm:self-baseline">
+                        {readingTime}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
-          </div>
+          )}
         </div>
+
         {post.imageUrl && (
-          <div className="flex-1 h-64 md:h-auto relative m-2">
-            <img className="w-full h-full object-cover" src={post.imageUrl} alt="Saloni Agarwal" style={{ height: 'auto', maxHeight: '900px' }} />
+          <div className="w-full md:w-72 shrink-0">
+            <div className="overflow-hidden rounded-xl border border-academic-border-light dark:border-academic-border-dark bg-transparent p-2">
+              <img 
+                className="w-full h-auto object-cover rounded-xl grayscale contrast-125 hover:grayscale-0 transition-all duration-700 ease-in-out" 
+                src={post.imageUrl} 
+                alt="Saloni Agarwal" 
+              />
+            </div>
           </div>
         )}
       </div>

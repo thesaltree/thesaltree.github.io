@@ -1,12 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lora, Fira_Code } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: "--font-inter"
+});
+
+const lora = Lora({
+  subsets: ["latin"],
+  variable: "--font-lora"
+});
+
+const firaCode = Fira_Code({
+  subsets: ["latin"],
+  variable: "--font-fira"
+});
 
 export const metadata: Metadata = {
-  title: "About me | Saloni Agarwal",
-  description: "Saloni Agarwal's personal website and blog",
+  title: "Saloni Agarwal",
+  description: "Personal website, curriculum vitae, and blog of Saloni Agarwal",
 };
 
 export default function RootLayout({
@@ -15,8 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={`${inter.variable} ${lora.variable} ${firaCode.variable}`}>
+      <body className="antialiased font-serif">
+        {children}
+      </body>
     </html>
   );
 }
+

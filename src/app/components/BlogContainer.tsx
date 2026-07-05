@@ -5,7 +5,7 @@ import BlogPost from './BlogPost';
 
 type Props = {
   posts: Post[];
-  type?: 'devBlogs' | 'thoughtsDump';
+  type?: 'devBlogs' | 'thoughtsDump' | 'paperNotes';
   selectedPost?: Post;
   setSelectedPost: (post: Post | undefined) => void;
   onPostClick: (post: Post) => void;

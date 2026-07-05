@@ -28,15 +28,6 @@ export const serializers = {
           return <p className="text-lg text-gray-800 dark:text-gray-200 leading-relaxed mb-6 font-serif">{props.children}</p>;
       }
     },
-    list: (props) => {
-      const { type } = props;
-      const bullet = type === 'bullet';
-      if (bullet) {
-        return <ul className="list-disc list-inside mb-6 space-y-2 text-lg text-gray-800 dark:text-gray-200 font-serif pl-2">{props.children}</ul>;
-      }
-      return <ol className="list-decimal list-inside mb-6 space-y-2 text-lg text-gray-800 dark:text-gray-200 font-serif pl-2">{props.children}</ol>;
-    },
-    listItem: (props) => <li className="mb-1 leading-relaxed">{props.children}</li>,
     image: (props) => (
       <figure className="mb-8 mt-6">
         <img
@@ -62,6 +53,15 @@ export const serializers = {
       </div>
     ),
   },
+  list: (props) => {
+    const { type } = props;
+    const bullet = type === 'bullet';
+    if (bullet) {
+      return <ul className="list-disc list-outside mb-6 space-y-2 text-lg text-gray-800 dark:text-gray-200 font-serif pl-6">{props.children}</ul>;
+    }
+    return <ol className="list-decimal list-outside mb-6 space-y-2 text-lg text-gray-800 dark:text-gray-200 font-serif pl-6">{props.children}</ol>;
+  },
+  listItem: (props) => <li className="mb-1 leading-relaxed">{props.children}</li>,
   marks: {
     strong: (props) => <strong className="font-bold text-gray-950 dark:text-gray-50">{props.children}</strong>,
     em: (props) => <em className="italic">{props.children}</em>,

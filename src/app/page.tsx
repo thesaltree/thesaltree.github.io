@@ -31,7 +31,9 @@ async function getPosts() {
 export default function Home() {
     const [aboutMe, setAboutMe] = useState<Post | undefined>(undefined);
     const [devBlogs, setDevBlogs] = useState<Post[]>([]);
+    const [paperNotes, setPaperNotes] = useState<Post[]>([]);
     const [thoughtsDump, setThoughtsDump] = useState<Post[]>([]);
+    const [recentWritings, setRecentWritings] = useState<Post[]>([]);
     const [activePage, setActivePage] = useState('home');
     const [loading, setLoading] = useState(true);
     const [selectedPost, setSelectedPost] = useState<Post | undefined>(undefined);
@@ -42,7 +44,9 @@ export default function Home() {
             const data = await getPosts();
             setAboutMe(data.find((post: Post) => post.categories.some((category) => category === 'about-me')));
             setDevBlogs(data.filter((post: Post) => post.categories.some((category) => category === 'dev')));
+            setPaperNotes(data.filter((post: Post) => post.categories.some((category) => category === 'paper-reading')));
             setThoughtsDump(data.filter((post: Post) => post.categories.some((category) => category === 'thoughts')));
+            setRecentWritings(data.filter((post: Post) => post.categories.some((category) => ['dev', 'paper-reading', 'thoughts'].includes(category))).slice(0, 5));
             setLoading(false);
         };
         fetchPosts();
@@ -80,16 +84,24 @@ export default function Home() {
                 return <MyWork />;
             case 'devBlogs':
                 return <BlogContainer posts={devBlogs} type={'devBlogs'} selectedPost={selectedPost} setSelectedPost={setSelectedPost} onPostClick={handlePostClick} />;
+            case 'paperNotes':
+                return <BlogContainer posts={paperNotes} type={'paperNotes'} selectedPost={selectedPost} setSelectedPost={setSelectedPost} onPostClick={handlePostClick} />;
             case 'thoughtsDump':
                 return <BlogContainer posts={thoughtsDump} type={'thoughtsDump'} selectedPost={selectedPost} setSelectedPost={setSelectedPost} onPostClick={handlePostClick} />;
             default:
                 return (
                     <AboutMePage 
                         post={aboutMe} 
-                        featuredPosts={devBlogs.slice(0, 3)} 
+                        featuredPosts={recentWritings} 
                         onPostClick={(post) => {
                             setSelectedPost(post);
-                            setActivePage('devBlogs');
+                            if (post.categories.some((category) => category === 'dev')) {
+                                setActivePage('devBlogs');
+                            } else if (post.categories.some((category) => category === 'paper-reading')) {
+                                setActivePage('paperNotes');
+                            } else if (post.categories.some((category) => category === 'thoughts')) {
+                                setActivePage('thoughtsDump');
+                            }
                         }} 
                     />
                 );
@@ -98,7 +110,7 @@ export default function Home() {
 
 
 
-    const navItems = ['home', 'devBlogs', 'thoughtsDump'];
+    const navItems = ['home', 'paperNotes', 'devBlogs', 'thoughtsDump'];
 
     return (
       <div className="min-h-screen flex flex-col bg-academic-bg-light dark:bg-academic-bg-dark text-academic-fg-light dark:text-academic-fg-dark selection:bg-academic-accent-light/10 dark:selection:bg-academic-accent-dark/20 transition-colors duration-300">
@@ -155,6 +167,7 @@ export default function Home() {
                         const tileSymbols: Record<string, string> = {
                           home: '🀐',        // 1 Bamboo for About
                           devBlogs: '🀅',    // Green Dragon for Dev Blogs
+                          paperNotes: '🀆',  // White Dragon for Paper Notes
                           thoughtsDump: '🀄',// Red Dragon for Thoughts Dump
                           myCV: '🀆',        // White Dragon for CV
                         };
@@ -175,9 +188,9 @@ export default function Home() {
                               <span className={`text-lg leading-none ${isActive ? 'filter drop-shadow-[0.5px_0.5px_0px_currentColor]' : ''}`}>
                                   {tileSymbols[page]}
                               </span>
-                              <span>
-                                  {page === 'home' ? 'About' : page === 'myCV' ? 'Curriculum Vitae' : page === 'devBlogs' ? 'Dev Blogs' : 'Thoughts Dump'}
-                              </span>
+                               <span>
+                                   {page === 'home' ? 'About' : page === 'myCV' ? 'Curriculum Vitae' : page === 'devBlogs' ? 'Dev Blogs' : page === 'paperNotes' ? 'Paper Notes' : 'Thoughts Dump'}
+                               </span>
                           </button>
                         );
                       })}
